@@ -1,0 +1,10 @@
+SPI
+- transaction:
+    SPI controls CS in begin/endTransaction
+- choose between HW/BB SPI
+- HW SPI
+- use SPISettings class
+- add support for bit order, data mode and clock speed to BB SPI
+
+Adafruit_ST7735
+- cleanup SPI and use transactions

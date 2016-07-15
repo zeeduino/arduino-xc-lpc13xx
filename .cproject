@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.crt.advproject.config.lib.debug.929472431">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.crt.advproject.config.lib.debug.929472431" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/arduino-xc-lpc13xx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/arduino-xc-lpc13xx/Debug"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="arduino-xc-lpc13xx" srcPrefixMapping="" srcRootPath=""/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" cleanCommand="rm -rf" description="Debug build" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" id="com.crt.advproject.config.lib.debug.929472431" name="Debug" parent="com.crt.advproject.config.lib.debug" postannouncebuildStep="Performing post-build steps" postbuildStep="arm-none-eabi-size &quot;lib${BuildArtifactFileName}&quot; ; # arm-none-eabi-objdump -h -S &quot;lib${BuildArtifactFileName}&quot; &gt;&quot;${BuildArtifactFileBaseName}.lss&quot;">
+					<folderInfo id="com.crt.advproject.config.lib.debug.929472431." name="/" resourcePath="">
+						<toolChain id="com.crt.advproject.toolchain.lib.debug.478017184" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.lib.debug">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.lib.debug.909383266" name="ARM-based MCU (Debug)" superClass="com.crt.advproject.platform.lib.debug"/>
+							<builder buildPath="${workspace_loc:/arduino-xc-lpc13xx}/Debug" id="com.crt.advproject.builder.lib.debug.987022646" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.lib.debug"/>
+							<tool id="com.crt.advproject.cpp.lib.debug.1627881943" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.lib.debug">
+								<option id="com.crt.advproject.cpp.specs.359086867" name="Specs" superClass="com.crt.advproject.cpp.specs" value="com.crt.advproject.cpp.specs.newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.cpp.arch.10812461" name="Architecture" superClass="com.crt.advproject.cpp.arch" value="com.crt.advproject.cpp.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.cpp.thumb.1944939704" name="Thumb mode" superClass="com.crt.advproject.cpp.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.702608634" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__NEWLIB__"/>
+									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="__CODE_RED"/>
+									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
+									<listOptionValue builtIn="false" value="__LPC13UXX__"/>
+									<listOptionValue builtIn="false" value="ARDUINO=200"/>
+								</option>
+								<option id="gnu.cpp.compiler.option.other.other.752089994" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.optimization.flags.1035327082" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="-fno-common" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.include.paths.937949512" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.cpp.hdrlib.2086809606" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" value="Newlib" valueType="enumerated"/>
+								<inputType id="com.crt.advproject.compiler.cpp.input.1880509915" superClass="com.crt.advproject.compiler.cpp.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gcc.lib.debug.554506745" name="MCU C Compiler" superClass="com.crt.advproject.gcc.lib.debug">
+								<option id="com.crt.advproject.gcc.arch.1588707066" name="Architecture" superClass="com.crt.advproject.gcc.arch" value="com.crt.advproject.gcc.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.thumb.236190293" name="Thumb mode" superClass="com.crt.advproject.gcc.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1490568705" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="__CODE_RED"/>
+									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
+									<listOptionValue builtIn="false" value="__LPC13UXX__"/>
+									<listOptionValue builtIn="false" value="__NEWLIB__"/>
+									<listOptionValue builtIn="false" value="ARDUINO=200"/>
+								</option>
+								<option id="gnu.c.compiler.option.misc.other.1790797932" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections" valueType="string"/>
+								<option id="gnu.c.compiler.option.optimization.flags.1490053424" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" value="-fno-common" valueType="string"/>
+								<option id="gnu.c.compiler.option.include.paths.2027579044" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.gcc.hdrlib.1087474345" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" value="Newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.specs.542552725" name="Specs" superClass="com.crt.advproject.gcc.specs" value="com.crt.advproject.gcc.specs.newlib" valueType="enumerated"/>
+								<inputType id="com.crt.advproject.compiler.input.339840916" superClass="com.crt.advproject.compiler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gas.lib.debug.1495507100" name="MCU Assembler" superClass="com.crt.advproject.gas.lib.debug">
+								<option id="com.crt.advproject.gas.arch.1284619215" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.thumb.1599087555" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.both.asm.option.flags.crt.2108457986" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -DDEBUG -D__CODE_RED -DCORE_M3 -D__USE_LPCOPEN -D__LPC13UXX__ -D__NEWLIB__" valueType="string"/>
+								<option id="gnu.both.asm.option.include.paths.1954428714" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.gas.hdrlib.1038316393" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.specs.2067146836" name="Specs" superClass="com.crt.advproject.gas.specs" value="com.crt.advproject.gas.specs.newlib" valueType="enumerated"/>
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1852222781" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+								<inputType id="com.crt.advproject.assembler.input.257897693" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.ar.lib.debug.740416992" name="MCU Archiver" superClass="com.crt.advproject.ar.lib.debug"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.crt.advproject.config.lib.release.848971764">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.crt.advproject.config.lib.release.848971764" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/arduino-xc-lpc13xx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/arduino-xc-lpc13xx/Release"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="arduino-xc-lpc13xx" srcPrefixMapping="" srcRootPath=""/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" cleanCommand="rm -rf" description="Release build" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" id="com.crt.advproject.config.lib.release.848971764" name="Release" parent="com.crt.advproject.config.lib.release" postannouncebuildStep="Performing post-build steps" postbuildStep="arm-none-eabi-size &quot;lib${BuildArtifactFileName}&quot; ; # arm-none-eabi-objdump -h -S &quot;lib${BuildArtifactFileName}&quot; &gt;&quot;${BuildArtifactFileBaseName}.lss&quot;">
+					<folderInfo id="com.crt.advproject.config.lib.release.848971764." name="/" resourcePath="">
+						<toolChain id="com.crt.advproject.toolchain.lib.release.1956624185" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.lib.release">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.lib.release.15268688" name="ARM-based MCU (Debug)" superClass="com.crt.advproject.platform.lib.release"/>
+							<builder buildPath="${workspace_loc:/arduino-xc-lpc13xx}/Release" id="com.crt.advproject.builder.lib.release.1431456577" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.lib.release"/>
+							<tool id="com.crt.advproject.cpp.lib.release.579948862" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.lib.release">
+								<option id="com.crt.advproject.cpp.specs.126389815" name="Specs" superClass="com.crt.advproject.cpp.specs" value="com.crt.advproject.cpp.specs.newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.cpp.arch.483633972" name="Architecture" superClass="com.crt.advproject.cpp.arch" value="com.crt.advproject.cpp.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.cpp.thumb.1929260953" name="Thumb mode" superClass="com.crt.advproject.cpp.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.664096883" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__NEWLIB__"/>
+									<listOptionValue builtIn="false" value="NDEBUG"/>
+									<listOptionValue builtIn="false" value="__CODE_RED"/>
+									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
+									<listOptionValue builtIn="false" value="__LPC13UXX__"/>
+									<listOptionValue builtIn="false" value="ARDUINO=200"/>
+								</option>
+								<option id="gnu.cpp.compiler.option.other.other.685454826" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.optimization.flags.1845997192" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="-fno-common -Os" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.include.paths.2587994" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.cpp.hdrlib.774510254" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" value="Newlib" valueType="enumerated"/>
+								<inputType id="com.crt.advproject.compiler.cpp.input.274395179" superClass="com.crt.advproject.compiler.cpp.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gcc.lib.release.1847036663" name="MCU C Compiler" superClass="com.crt.advproject.gcc.lib.release">
+								<option id="com.crt.advproject.gcc.arch.1661168792" name="Architecture" superClass="com.crt.advproject.gcc.arch" value="com.crt.advproject.gcc.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.thumb.276874439" name="Thumb mode" superClass="com.crt.advproject.gcc.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2054307951" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="NDEBUG"/>
+									<listOptionValue builtIn="false" value="__CODE_RED"/>
+									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
+									<listOptionValue builtIn="false" value="__LPC13UXX__"/>
+									<listOptionValue builtIn="false" value="__NEWLIB__"/>
+									<listOptionValue builtIn="false" value="ARDUINO=200"/>
+								</option>
+								<option id="gnu.c.compiler.option.misc.other.1514909422" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections" valueType="string"/>
+								<option id="gnu.c.compiler.option.optimization.flags.320629503" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" value="-fno-common" valueType="string"/>
+								<option id="gnu.c.compiler.option.include.paths.2027856646" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.gcc.hdrlib.1575977709" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" value="Newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.specs.1677248342" name="Specs" superClass="com.crt.advproject.gcc.specs" value="com.crt.advproject.gcc.specs.newlib" valueType="enumerated"/>
+								<inputType id="com.crt.advproject.compiler.input.731892297" superClass="com.crt.advproject.compiler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gas.lib.release.652925182" name="MCU Assembler" superClass="com.crt.advproject.gas.lib.release">
+								<option id="com.crt.advproject.gas.arch.2109147231" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm3" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.thumb.1312975351" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
+								<option id="gnu.both.asm.option.flags.crt.353523923" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -DNDEBUG -D__CODE_RED -DCORE_M3 -D__USE_LPCOPEN -D__LPC13UXX__ -D__NEWLIB__" valueType="string"/>
+								<option id="gnu.both.asm.option.include.paths.194007091" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+								</option>
+								<option id="com.crt.advproject.gas.hdrlib.867342807" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Newlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.specs.1160678075" name="Specs" superClass="com.crt.advproject.gas.specs" value="com.crt.advproject.gas.specs.newlib" valueType="enumerated"/>
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1542472007" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+								<inputType id="com.crt.advproject.assembler.input.967328757" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.ar.lib.release.382603863" name="MCU Archiver" superClass="com.crt.advproject.ar.lib.release"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="arduino-xc-lpc13xx.com.crt.advproject.projecttype.lib.1732339414" name="Static Library" projectType="com.crt.advproject.projecttype.lib"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="com.crt.config">
+		<projectStorage>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;TargetConfig&gt;
+&lt;Properties property_0="" property_2="LPC11_12_13_64K_8K.cfx" property_3="NXP" property_4="LPC1347" property_count="5" version="70200"/&gt;
+&lt;infoList vendor="NXP"&gt;&lt;info chip="LPC1347" flash_driver="LPC11_12_13_64K_8K.cfx" match_id="0x08020543" name="LPC1347" stub="crt_emu_lpc11_13_nxp"&gt;&lt;chip&gt;&lt;name&gt;LPC1347&lt;/name&gt;
+&lt;family&gt;LPC13xx (12bit ADC)&lt;/family&gt;
+&lt;vendor&gt;NXP (formerly Philips)&lt;/vendor&gt;
+&lt;reset board="None" core="Real" sys="Real"/&gt;
+&lt;clock changeable="TRUE" freq="12MHz" is_accurate="TRUE"/&gt;
+&lt;memory can_program="true" id="Flash" is_ro="true" type="Flash"/&gt;
+&lt;memory id="RAM" type="RAM"/&gt;
+&lt;memory id="Periph" is_volatile="true" type="Peripheral"/&gt;
+&lt;memoryInstance derived_from="Flash" id="MFlash64" location="0x0" size="0x10000"/&gt;
+&lt;memoryInstance derived_from="RAM" id="RamLoc8" location="0x10000000" size="0x2000"/&gt;
+&lt;memoryInstance derived_from="RAM" id="RamUsb2" location="0x20004000" size="0x800"/&gt;
+&lt;memoryInstance derived_from="RAM" id="RamPeriph2" location="0x20000000" size="0x800"/&gt;
+&lt;prog_flash blocksz="0x1000" location="0x0" maxprgbuff="0x1000" progwithcode="TRUE" size="0x10000"/&gt;
+&lt;peripheralInstance derived_from="V7M_MPU" determined="infoFile" id="MPU" location="0xe000ed90"/&gt;
+&lt;peripheralInstance derived_from="V7M_NVIC" determined="infoFile" id="NVIC" location="0xe000e000"/&gt;
+&lt;peripheralInstance derived_from="V7M_DCR" determined="infoFile" id="DCR" location="0xe000edf0"/&gt;
+&lt;peripheralInstance derived_from="V7M_ITM" determined="infoFile" id="ITM" location="0xe0000000"/&gt;
+&lt;peripheralInstance derived_from="I2C" determined="infoFile" id="I2C" location="0x40000000"/&gt;
+&lt;peripheralInstance derived_from="WWDT" determined="infoFile" id="WWDT" location="0x40004000"/&gt;
+&lt;peripheralInstance derived_from="CT16B0" determined="infoFile" id="CT16B0" location="0x4000c000"/&gt;
+&lt;peripheralInstance derived_from="CT16B1" determined="infoFile" id="CT16B1" location="0x40010000"/&gt;
+&lt;peripheralInstance derived_from="CT32B0" determined="infoFile" id="CT32B0" location="0x40014000"/&gt;
+&lt;peripheralInstance derived_from="CT32B1" determined="infoFile" id="CT32B1" location="0x40018000"/&gt;
+&lt;peripheralInstance derived_from="USART" determined="infoFile" id="USART" location="0x40008000"/&gt;
+&lt;peripheralInstance derived_from="ADC" determined="infoFile" id="ADC" location="0x4001c000"/&gt;
+&lt;peripheralInstance derived_from="PMU" determined="infoFile" id="PMU" location="0x40038000"/&gt;
+&lt;peripheralInstance derived_from="FLASHCTRL" determined="infoFile" id="FLASHCTRL" location="0x4003c000"/&gt;
+&lt;peripheralInstance derived_from="SSP0" determined="infoFile" id="SSP0" location="0x40040000"/&gt;
+&lt;peripheralInstance derived_from="IOCON" determined="infoFile" id="IOCON" location="0x40044000"/&gt;
+&lt;peripheralInstance derived_from="SYSCON" determined="infoFile" id="SYSCON" location="0x40048000"/&gt;
+&lt;peripheralInstance derived_from="GPIO-PIN-INT" determined="infoFile" id="GPIO-PIN-INT" location="0x4004c000"/&gt;
+&lt;peripheralInstance derived_from="SSP1" determined="infoFile" id="SSP1" location="0x40058000"/&gt;
+&lt;peripheralInstance derived_from="GPIO-GROUP-INT0" determined="infoFile" id="GPIO-GROUP-INT0" location="0x4005c000"/&gt;
+&lt;peripheralInstance derived_from="GPIO-GROUP-INT1" determined="infoFile" id="GPIO-GROUP-INT1" location="0x40060000"/&gt;
+&lt;peripheralInstance derived_from="RITIMER" determined="infoFile" id="RITIMER" location="0x40064000"/&gt;
+&lt;peripheralInstance derived_from="USB" determined="infoFile" id="USB" location="0x40080000"/&gt;
+&lt;peripheralInstance derived_from="GPIO-PORT" determined="infoFile" id="GPIO-PORT" location="0x50000000"/&gt;
+&lt;/chip&gt;
+&lt;processor&gt;&lt;name gcc_name="cortex-m3"&gt;Cortex-M3&lt;/name&gt;
+&lt;family&gt;Cortex-M&lt;/family&gt;
+&lt;/processor&gt;
+&lt;link href="nxp_lpc13Uxx_peripheral.xme" show="embed" type="simple"/&gt;
+&lt;/info&gt;
+&lt;/infoList&gt;
+&lt;/TargetConfig&gt;</projectStorage>
+	</storageModule>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.debug.929472431;com.crt.advproject.config.lib.debug.929472431.;com.crt.advproject.gcc.lib.debug.554506745;com.crt.advproject.compiler.input.339840916">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.release.848971764;com.crt.advproject.config.lib.release.848971764.;com.crt.advproject.cpp.lib.release.579948862;com.crt.advproject.compiler.cpp.input.274395179">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.debug.929472431;com.crt.advproject.config.lib.debug.929472431.;com.crt.advproject.cpp.lib.debug.1627881943;com.crt.advproject.compiler.cpp.input.1880509915">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.debug.929472431;com.crt.advproject.config.lib.debug.929472431.;com.crt.advproject.gas.lib.debug.1495507100;com.crt.advproject.assembler.input.257897693">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.release.848971764;com.crt.advproject.config.lib.release.848971764.;com.crt.advproject.gas.lib.release.652925182;com.crt.advproject.assembler.input.967328757">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.lib.release.848971764;com.crt.advproject.config.lib.release.848971764.;com.crt.advproject.gcc.lib.release.1847036663;com.crt.advproject.compiler.input.731892297">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+</cproject>
