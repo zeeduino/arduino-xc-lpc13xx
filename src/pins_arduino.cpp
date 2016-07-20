@@ -94,7 +94,7 @@ const DigitalMappingType g_ArduinoPinMappingDigital[] =
 /*
  * Pins descriptions - LPCXpresso 1347
  */
-const LPCPinDescription g_ArduinoPinDescription[] =
+const ArduinoPinDescriptionType g_ArduinoPinDescription[] =
 {
         // pins PIO0_0, PIO0_9, PIO0_10, PIO0_15 are connected to programmer on LPCXpresso LPC1347 board
         // PIO0_3 is connected to USB_VBUS, PIO0_6 is connected to USB_CONECT
@@ -156,7 +156,7 @@ const LPCPinDescription g_ArduinoPinDescription[] =
 
 // why extern? const is internal (like static) by default and we didn't declare this one in pins_arduino.h
 // Simple: http://stackoverflow.com/a/14894897/2268559
-extern const uint32_t arduinoPinsArrayLength = sizeof(g_ArduinoPinDescription) / sizeof(LPCPinDescription);
+extern const uint32_t arduinoPinsArrayLength = sizeof(g_ArduinoPinDescription) / sizeof(ArduinoPinDescriptionType);
 
 void Variant_Pins_Init()
 {
@@ -164,6 +164,8 @@ void Variant_Pins_Init()
 
     for (ix = 0; ix < arduinoPinsArrayLength; ix++ )
     {
+        if(g_ArduinoPinDescription[ix].port == 99) continue;
+
         Chip_IOCON_PinMuxSet(LPC_IOCON, g_ArduinoPinDescription[ix].port, g_ArduinoPinDescription[ix].pin, g_ArduinoPinDescription[ix].modefunc);
     }
 

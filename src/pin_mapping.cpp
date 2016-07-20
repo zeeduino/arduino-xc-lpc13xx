@@ -87,6 +87,10 @@ uint32_t pinCount(void)
 
 bool isPin(uint32_t ulPin)
 {
-    return (ulPin < arduinoPinsArrayLength);
+    if (ulPin >= arduinoPinsArrayLength) return false;
+
+    if (APIN_PORT(ulPin) == 99) return false;
+
+    return true;
 }
 
