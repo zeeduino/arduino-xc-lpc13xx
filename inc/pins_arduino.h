@@ -74,7 +74,7 @@ typedef enum _PwmChannelType
 
 typedef struct _PwmMappingType
 {
-    LPC_TIMER_T *pTMR;
+    void *pTMR;
     uint32_t channel:8;
     uint32_t reserved:8;
     uint32_t modefunc:16; // IOCON register value to connect PWM function to it's pin designated in g_ArduinoPinDescription[]
@@ -82,7 +82,7 @@ typedef struct _PwmMappingType
 
 typedef struct _DigitalMappingType
 {
-    LPC_GPIO_T *pPORT;
+    void *pPORT;
     // IOCON register value to connect and configure GPIO function to it's pin designated in g_ArduinoPinDescription[]
     uint32_t modefunc:16;
     uint32_t modefuncPullup:16;
@@ -117,11 +117,11 @@ extern const uint32_t arduinoPinsArrayLength;
 #define APIN_PWM(p)   (g_ArduinoPinDescription[p].pwmChannel)
 #define APIN_INT(p)   (g_ArduinoPinDescription[p].intChannel)
 
-#define PWM_MAP_TIMER(p)    (g_ArduinoPinMappingPwm[p].pTMR)
+#define PWM_MAP_TIMER(p)    (LPC_TIMER_T *)(g_ArduinoPinMappingPwm[p].pTMR)
 #define PWM_MAP_CHANNEL(p)  (g_ArduinoPinMappingPwm[p].channel)
 #define PWM_MAP_MODE(p)     (g_ArduinoPinMappingPwm[p].modefunc)
 
-#define DIG_MAP_PORT(p)     (g_ArduinoPinMappingDigital[p].pPORT)
+#define DIG_MAP_PORT(p)     (LPC_GPIO_T *)(g_ArduinoPinMappingDigital[p].pPORT)
 #define DIG_MAP_MODE(p)     (g_ArduinoPinMappingDigital[p].modefunc)
 #define DIG_MAP_PUP(p)      (g_ArduinoPinMappingDigital[p].modefuncPullup)
 #define DIG_MAP_PDOWN(p)    (g_ArduinoPinMappingDigital[p].modefuncPulldown)
