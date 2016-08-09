@@ -44,7 +44,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.937949512" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.cpp.hdrlib.2086809606" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" value="Newlib" valueType="enumerated"/>
 								<inputType id="com.crt.advproject.compiler.cpp.input.1880509915" superClass="com.crt.advproject.compiler.cpp.input"/>
@@ -66,7 +66,7 @@
 								<option id="gnu.c.compiler.option.include.paths.2027579044" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.gcc.hdrlib.1087474345" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" value="Newlib" valueType="enumerated"/>
 								<option id="com.crt.advproject.gcc.specs.542552725" name="Specs" superClass="com.crt.advproject.gcc.specs" value="com.crt.advproject.gcc.specs.newlib" valueType="enumerated"/>
@@ -79,7 +79,7 @@
 								<option id="gnu.both.asm.option.include.paths.1954428714" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.gas.hdrlib.1038316393" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Newlib" valueType="enumerated"/>
 								<option id="com.crt.advproject.gas.specs.2067146836" name="Specs" superClass="com.crt.advproject.gas.specs" value="com.crt.advproject.gas.specs.newlib" valueType="enumerated"/>
@@ -141,6 +141,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.cpp.hdrlib.774510254" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" value="Newlib" valueType="enumerated"/>
 								<inputType id="com.crt.advproject.compiler.cpp.input.274395179" superClass="com.crt.advproject.compiler.cpp.input"/>
@@ -163,6 +164,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.gcc.hdrlib.1575977709" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" value="Newlib" valueType="enumerated"/>
 								<option id="com.crt.advproject.gcc.specs.1677248342" name="Specs" superClass="com.crt.advproject.gcc.specs" value="com.crt.advproject.gcc.specs.newlib" valueType="enumerated"/>
@@ -176,6 +178,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_13xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/arduino-xc/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/zeeduino-xc-core/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.gas.hdrlib.867342807" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Newlib" valueType="enumerated"/>
 								<option id="com.crt.advproject.gas.specs.1160678075" name="Specs" superClass="com.crt.advproject.gas.specs" value="com.crt.advproject.gas.specs.newlib" valueType="enumerated"/>
