@@ -19,7 +19,6 @@
 #include "board/board_usb_custom.h"
 
 #include "chip.h"
-//#include "flash_13xx.h"
 #include "usbd_rom_api.h"
 
 #include "tracer.h"
@@ -40,6 +39,15 @@ const  USBD_API_T *g_pUsbApi;
 /* local variables */
 
 volatile static bool isConfigured = false;
+/*
+ * In case when USB device is composite device, zeeduino USB related C++ classes will call
+ * Board_USB_Device_Init() multiple times, once for each class instance constructed.
+ * USB device, on the other hand, should be initialized only once since it initializes all
+ * implemented USB classes when the device is first initialized.
+ *
+ * Once USB device is successfully initialized, this variable is used by Board_USB_Device_Init()
+ * to skip the process in subsequent calls to it.
+ */
 volatile static bool isInitialized = false;
 
 
@@ -221,7 +229,12 @@ bool Board_USB_Device_Init(void)
 		  membase += (memsize - usb_param.mem_size);
 		  memsize = usb_param.mem_size;
 
-		  /* Initialise the class driver(s) */
+		  /* All USB classes implemented in this device need to be initialized here,
+		   * after the device driver has initialized correctly. This needs to be done
+		   * only once.
+		   * All the USB interfaces that are initialized below have separate Zeeduino C++ classes
+		   * which are used to work with those interfaces.
+		   */
 		  #ifdef CONFIG_USB_DEVICE_CDC
 		    ret = __USB_Device_CDC_Init();
 		    if(ret != LPC_OK) return false;
