@@ -48,7 +48,7 @@ Serial_UART_Context UART0_Context;
 //Serial_UART_Context UART2_Context;
 
 // This can be either declared like this...
-//UARTClass Serial(LPC_USART, UART0_IRQn, 0, &rxring, &txring);
+//UARTClass Serial(&UART0_Context);
 // ...or like this...
 UARTSerial Serial;
 // and then constructed in Serial_Init()

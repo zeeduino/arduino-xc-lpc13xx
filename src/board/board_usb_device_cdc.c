@@ -7,11 +7,13 @@
 
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "usbd_rom_api.h"
 
 #include "ringbuffer.h"
 #include "board/board_usb_device.h"
+#include "board/board_serial_context.h"
 #include "usb_device_descriptors.h"
 #include "usb_device_lpc1347.h"
 
@@ -26,15 +28,11 @@ static bool isConnected = false;             /* ToDo: Consider work-around */
 
 
 //============================================================================
-/* Transmit and receive ring buffers */
-static RingBuffer txring, rxring;
-
 /* Transmit and receive ring buffer sizes */
 #define UART_TXRB_SIZE (8*CDC_DATA_EP_MAXPACKET_SIZE)	/* Send */
 #define UART_RXRB_SIZE (2*CDC_DATA_EP_MAXPACKET_SIZE)	/* Receive */
 
-/* Transmit and receive buffers */
-static uint8_t rxbuff[UART_RXRB_SIZE], txbuff[UART_TXRB_SIZE];
+Serial_UART_Context USBUART_Context;
 //============================================================================
 
 WEAK void USB_Device_CDC_Receive_ISR(void);
@@ -59,7 +57,7 @@ bool Board_USB_Device_CDC_isConnected(void)
 
 bool Board_USB_Device_CDC_putc(uint8_t c)
 {
-  if ( !RingBuffer_pushOne(&txring, &c) )
+  if ( !RingBuffer_pushOne(USBUART_Context.tx_rbr, &c) )
   {
       return false;
   }
@@ -71,7 +69,7 @@ bool Board_USB_Device_CDC_getc(uint8_t *c)
 {
 	if(!c) return false; /* Make sure pointer isn't NULL */
 
-	return RingBuffer_popOne(&rxring, c);
+	return RingBuffer_popOne(USBUART_Context.rx_rbr, c);
 }
 
 uint16_t Board_USB_Device_CDC_Send(uint8_t* buffer, uint16_t count)
@@ -92,7 +90,7 @@ uint16_t Board_USB_Device_CDC_Receive(uint8_t* buffer, uint16_t max)
 {
   if( !(buffer && max) ) return 0; // buffer not NULL and max != 0
 
-  return RingBuffer_pop(&rxring, buffer, max);
+  return RingBuffer_pop(USBUART_Context.rx_rbr, buffer, max);
 }
 
 /**************************************************************************/
@@ -124,7 +122,7 @@ static ErrorCode_t __USB_Device_CDC_EPIn_Bulk_Handler(USBD_HANDLE_T hUsb, void* 
     uint8_t buffer[CDC_DATA_EP_MAXPACKET_SIZE];
     uint16_t count;
 
-    count = RingBuffer_pop(&txring, buffer, CDC_DATA_EP_MAXPACKET_SIZE);
+    count = RingBuffer_pop(USBUART_Context.tx_rbr, buffer, CDC_DATA_EP_MAXPACKET_SIZE);
     USBD_API->hw->WriteEP(hUsb, CDC_DATA_EP_IN, buffer, count); // write data to EP
 
 //    isConnected = true;
@@ -143,7 +141,7 @@ static ErrorCode_t __USB_Device_CDC_EPOut_Bulk_Handler(USBD_HANDLE_T hUsb, void*
     count = USBD_API->hw->ReadEP(hUsb, CDC_DATA_EP_OUT, buffer);
     for (i=0; i<count; i++)
     {
-    	RingBuffer_pushOne(&rxring, buffer+i);
+    	RingBuffer_pushOne(USBUART_Context.rx_rbr, buffer+i);
     }
 
 //    isConnected = true;
@@ -163,12 +161,25 @@ ErrorCode_t __USB_Device_CDC_onConfigured(USBD_HANDLE_T hUsb)
 
 //  isConnected = true;
 
-  RingBuffer_flush(&rxring);
-  RingBuffer_flush(&txring);
+  RingBuffer_flush(USBUART_Context.rx_rbr);
+  RingBuffer_flush(USBUART_Context.tx_rbr);
 
   ADD_EVENT(EVENT_CDC_CONFIGURED)
 
   return LPC_OK;
+}
+
+void __USB_Device_CDC_UARTContext_Init()
+{
+	USBUART_Context.dwId = 0;
+	USBUART_Context.pUART = NULL;
+	USBUART_Context.dwIrq = 0;
+	USBUART_Context.rx_rbr = malloc(sizeof(RingBuffer));
+	USBUART_Context.tx_rbr = malloc(sizeof(RingBuffer));
+	USBUART_Context.rx_buffer = malloc(sizeof(uint8_t) * UART_RXRB_SIZE);
+	USBUART_Context.tx_buffer = malloc(sizeof(uint8_t) * UART_TXRB_SIZE);
+	RingBuffer_init(USBUART_Context.rx_rbr, USBUART_Context.rx_buffer, UART_RXRB_SIZE, sizeof(USBUART_Context.rx_buffer[0]));
+	RingBuffer_init(USBUART_Context.tx_rbr, USBUART_Context.tx_buffer, UART_TXRB_SIZE, sizeof(USBUART_Context.tx_buffer[0]));
 }
 
 ErrorCode_t __USB_Device_CDC_Init()
@@ -180,9 +191,7 @@ ErrorCode_t __USB_Device_CDC_Init()
 	USB_INTERFACE_DESCRIPTOR const *const pControlIntfDesc = &USB_FsConfigDescriptor.CDC_CCI_Interface;
 	USB_INTERFACE_DESCRIPTOR const *const pDataIntfDesc = &USB_FsConfigDescriptor.CDC_DCI_Interface;
 
-	RingBuffer_init(&rxring, rxbuff, UART_RXRB_SIZE, sizeof(rxbuff[0]));
-	RingBuffer_init(&txring, txbuff, UART_TXRB_SIZE, sizeof(txbuff[0]));
-
+	__USB_Device_CDC_UARTContext_Init();
 
 	USBD_CDC_INIT_PARAM_T cdc_param =
   {
