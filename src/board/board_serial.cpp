@@ -41,19 +41,11 @@ extern const uint32_t SERIAL_8S1 = (UART_LCR_WLEN8 | UART_LCR_SBS_1BIT | UART_LC
  * UART objects
  */
 /*
- * We declare buffers here so we can have multiple instances of
- * Serial object on different ports and not have to handle that
- * in UARTClass
+ * For each USART present on the chip, we declare one context
  */
-/* Transmit and receive ring buffers */
-STATIC RingBuffer txring, rxring;
-
-/* Transmit and receive ring buffer sizes */
-#define UART_SRB_SIZE 128   /* Send */
-#define UART_RRB_SIZE 32    /* Receive */
-
-/* Transmit and receive buffers */
-static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
+Serial_UART_Context UART0_Context;
+//Serial_UART_Context UART1_Context;
+//Serial_UART_Context UART2_Context;
 
 // This can be either declared like this...
 //UARTClass Serial(LPC_USART, UART0_IRQn, 0, &rxring, &txring);
@@ -61,83 +53,92 @@ static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
 UARTSerial Serial;
 // and then constructed in Serial_Init()
 
+/* Transmit and receive ring buffer sizes */
+#define UART_TXRB_SIZE 128   /* Send */
+#define UART_RXRB_SIZE 32    /* Receive */
+
 // ----------------------------------------------------------------------------
 //   INIT/DEINIT FUNCTIONS
 // ----------------------------------------------------------------------------
 void Serial_Init(void)
 {
-
-    /* Before using the ring buffers, initialize them using the ring
-       buffer init function */
-    RingBuffer_init(&rxring, rxbuff, UART_RRB_SIZE, sizeof(uint8_t));
-    RingBuffer_init(&txring, txbuff, UART_SRB_SIZE, sizeof(uint8_t));
-
-    Serial = UARTSerial(LPC_USART, UART0_IRQn, 0, &rxring, &txring);
+	// Add code here for each USART chip has and you want to use in Zeeduino
+	UART0_Context.dwId = 0;
+	UART0_Context.pUART = (void*)LPC_USART;
+	UART0_Context.dwIrq = UART0_IRQn;
+	UART0_Context.rx_rbr = new RingBuffer;
+	UART0_Context.tx_rbr = new RingBuffer;
+	UART0_Context.rx_buffer = new uint8_t[UART_RXRB_SIZE];
+	UART0_Context.tx_buffer = new uint8_t[UART_TXRB_SIZE];
+	RingBuffer_init(UART0_Context.rx_rbr, UART0_Context.rx_buffer, UART_RXRB_SIZE, sizeof(uint8_t));
+	RingBuffer_init(UART0_Context.tx_rbr, UART0_Context.tx_buffer, UART_TXRB_SIZE, sizeof(uint8_t));
+    Serial = UARTSerial(&UART0_Context);
 }
 
 // ----------------------------------------------------------------------------
-void Serial_UART_Init(void *pUart, uint32_t dwIrq, const uint32_t dwBaudRate, const uint32_t configData)
+void Serial_UART_Init(void *uartHandle, const uint32_t dwBaudRate, const uint32_t configData)
 {
-    LPC_USART_T* _pUart = (LPC_USART_T*)pUart;
-    IRQn_Type _dwIrq = (IRQn_Type)dwIrq;
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+    IRQn_Type _dwIrq = (IRQn_Type)UART_CONTEXT(uartHandle)->dwIrq;
 
-    Chip_UART_Init(_pUart);
-    Chip_UART_SetBaud(_pUart, dwBaudRate);
-    Chip_UART_ConfigData(_pUart, configData);
-    Chip_UART_SetupFIFOS(_pUart, (UART_FCR_FIFO_EN | UART_FCR_TRG_LEV2));
-    Chip_UART_TXEnable(_pUart);
+    Chip_UART_Init(pUart);
+    Chip_UART_SetBaud(pUart, dwBaudRate);
+    Chip_UART_ConfigData(pUart, configData);
+    Chip_UART_SetupFIFOS(pUart, (UART_FCR_FIFO_EN | UART_FCR_TRG_LEV2));
+    Chip_UART_TXEnable(pUart);
 
     /* Enable receive data and line status interrupt, the transmit interrupt
        is handled by the driver. */
-    Chip_UART_IntEnable(_pUart, (UART_IER_RBRINT | UART_IER_RLSINT));
+    Chip_UART_IntEnable(pUart, (UART_IER_RBRINT | UART_IER_RLSINT));
 
     NVIC_SetPriority(_dwIrq, 1);
     NVIC_EnableIRQ(_dwIrq);
 }
 
 // ----------------------------------------------------------------------------
-void Serial_UART_End(void *pUart, uint32_t dwIrq)
+void Serial_UART_End(void *uartHandle)
 {
-    LPC_USART_T* _pUart = (LPC_USART_T*)pUart;
-    IRQn_Type _dwIrq = (IRQn_Type)dwIrq;
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+    IRQn_Type _dwIrq = (IRQn_Type)UART_CONTEXT(uartHandle)->dwIrq;
 
     NVIC_DisableIRQ(_dwIrq);
-    Chip_UART_DeInit(_pUart);
+    Chip_UART_DeInit(pUart);
 }
 
 // ----------------------------------------------------------------------------
-void Serial_UART_Flush(void *pUart)
+void Serial_UART_Flush(void *uartHandle)
 {
-    LPC_USART_T* _pUart = (LPC_USART_T*)pUart;
-
     // Wait for transmission to complete
-    while (!Serial_UART_TxRegisterEmpty(_pUart)) yield();
+    while (!Serial_UART_TxRegisterEmpty(uartHandle)) yield();
 }
 
 // ----------------------------------------------------------------------------
 //   LOW-LEVEL RX/TX FUNCTIONS, ALSO USED IN IRQ HANDLER
 // ----------------------------------------------------------------------------
 /* UART transmit-only interrupt handler for ring buffers */
-void Serial_UART_Transmit(void *pUART, RingBuffer *pRB)
+void Serial_UART_Transmit(void *uartHandle)
 {
 	uint8_t ch;
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
 
     /* Fill FIFO until full or until TX ring buffer is empty */
-    while (Serial_UART_TxRegisterEmpty(pUART) && RingBuffer_popOne(pRB, &ch))
+    while (Serial_UART_TxRegisterEmpty(uartHandle) && RingBuffer_popOne(UART_CONTEXT(uartHandle)->tx_rbr, &ch))
     {
-        Chip_UART_SendByte((LPC_USART_T*)pUART, ch);
+        Chip_UART_SendByte(pUart, ch);
     }
 }
 
 // ----------------------------------------------------------------------------
 /* UART receive-only interrupt handler for ring buffers */
-void Serial_UART_Receive(void *pUART, RingBuffer *pRB)
+void Serial_UART_Receive(void *uartHandle)
 {
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+
     /* New data will be ignored if data not popped in time */
-    while (Serial_UART_RxRegisterHasData(pUART))
+    while (Serial_UART_RxRegisterHasData(uartHandle))
     {
-        uint8_t ch = Chip_UART_ReadByte((LPC_USART_T*)pUART);
-        RingBuffer_pushOne(pRB, &ch);
+        uint8_t ch = Chip_UART_ReadByte(pUart);
+        RingBuffer_pushOne(UART_CONTEXT(uartHandle)->rx_rbr, &ch);
     }
 }
 
@@ -147,9 +148,10 @@ void Serial_UART_Receive(void *pUART, RingBuffer *pRB)
  * This usually means: the top byte of the hardware UART FIFO is available
  * to accept next byte to be sent.
  */
-bool Serial_UART_TxRegisterEmpty(void *pUART)
+bool Serial_UART_TxRegisterEmpty(void *uartHandle)
 {
-	return (Chip_UART_ReadLineStatus((LPC_USART_T *)pUART) & UART_LSR_THRE) != 0;
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+	return (Chip_UART_ReadLineStatus(pUart) & UART_LSR_THRE) != 0;
 }
 
 // ----------------------------------------------------------------------------
@@ -159,39 +161,42 @@ bool Serial_UART_TxRegisterEmpty(void *pUART)
  * points to the oldest received byte in hardware UART FIFO, has not been read yet,
  * there's still data to read from receive FIFO.
  */
-bool Serial_UART_RxRegisterHasData(void *pUART)
+bool Serial_UART_RxRegisterHasData(void *uartHandle)
 {
-	return (Chip_UART_ReadLineStatus((LPC_USART_T *)pUART) & UART_LSR_RDR) != 0;
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+	return (Chip_UART_ReadLineStatus(pUart) & UART_LSR_RDR) != 0;
 }
 
 // ----------------------------------------------------------------------------
 //   INTERRUPTS
 // ----------------------------------------------------------------------------
-void Serial_UART_Set_Interrupt_Priority(uint32_t dwIrq, uint32_t priority)
+void Serial_UART_Set_Interrupt_Priority(void *uartHandle, uint32_t priority)
 {
-    IRQn_Type _dwIrq = (IRQn_Type)dwIrq;
+	IRQn_Type _dwIrq = (IRQn_Type)UART_CONTEXT(uartHandle)->dwIrq;
 
     NVIC_SetPriority(_dwIrq, priority & 0x0F);
 }
 
 // ----------------------------------------------------------------------------
-uint32_t Serial_UART_Get_Interrupt_Priority(uint32_t dwIrq)
+uint32_t Serial_UART_Get_Interrupt_Priority(void *uartHandle)
 {
-    IRQn_Type _dwIrq = (IRQn_Type)dwIrq;
+	IRQn_Type _dwIrq = (IRQn_Type)UART_CONTEXT(uartHandle)->dwIrq;
 
     return NVIC_GetPriority(_dwIrq);
 }
 
 // ----------------------------------------------------------------------------
-void Serial_UART_Disable_Interrupt(void *pUART, uint32_t dwIrq)
+void Serial_UART_Disable_Interrupt(void *uartHandle)
 {
-	Chip_UART_IntDisable((LPC_USART_T *)pUART, UART_IER_THREINT);
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+	Chip_UART_IntDisable(pUart, UART_IER_THREINT);
 }
 
 // ----------------------------------------------------------------------------
-void Serial_UART_Enable_Interrupt(void *pUART, uint32_t dwIrq)
+void Serial_UART_Enable_Interrupt(void *uartHandle)
 {
-	Chip_UART_IntEnable((LPC_USART_T *)pUART, UART_IER_THREINT);
+    LPC_USART_T* pUart = (LPC_USART_T*)UART_CONTEXT(uartHandle)->pUART;
+	Chip_UART_IntEnable(pUart, UART_IER_THREINT);
 }
 
 // ----------------------------------------------------------------------------
@@ -223,8 +228,9 @@ extern "C" {
  */
 
 /**
- * @brief   UART interrupt handler using ring buffers
- * @return  Nothing
+ * Each USART peripheral will have it's own IRQ handler.
+ * In the IRQ code, use a corresponding UARTx_Context declared above,
+ * similar to what we did here for UART0 (the only USART on LPC1347)
  */
 #if defined (__USE_LPCOPEN)
 void UART_IRQHandler(void)
@@ -239,17 +245,17 @@ USART_IRQHandler
     /* Handle transmit interrupt if enabled */
     if (LPC_USART->IER & UART_IER_THREINT)
     {
-    	Serial_UART_Transmit(LPC_USART, &txring);
+    	Serial_UART_Transmit(&UART0_Context);
 
         /* Disable transmit interrupt if the ring buffer is empty */
-        if (RingBuffer_isEmpty(&txring))
+        if (RingBuffer_isEmpty(UART0_Context.tx_rbr))
         {
-        	Serial_UART_Disable_Interrupt(LPC_USART, 0);
+        	Serial_UART_Disable_Interrupt(&UART0_Context);
         }
     }
 
     /* Handle receive interrupt */
-    Serial_UART_Receive(LPC_USART, &rxring);
+    Serial_UART_Receive(&UART0_Context);
 }
 
 
