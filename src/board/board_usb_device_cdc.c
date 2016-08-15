@@ -10,7 +10,7 @@
 
 #include "usbd_rom_api.h"
 
-#include "ring_buffer.h"
+#include "ringbuffer.h"
 #include "board/board_usb_device.h"
 #include "usb_device_descriptors.h"
 #include "usb_device_lpc1347.h"
@@ -27,7 +27,7 @@ static bool isConnected = false;             /* ToDo: Consider work-around */
 
 //============================================================================
 /* Transmit and receive ring buffers */
-STATIC RINGBUFF_T txring, rxring;
+STATIC RingBuffer txring, rxring;
 
 /* Transmit and receive ring buffer sizes */
 #define CDC_SRB_SIZE (8*CDC_DATA_EP_MAXPACKET_SIZE)	/* Send */
@@ -59,7 +59,7 @@ bool Board_USB_Device_CDC_isConnected(void)
 
 bool Board_USB_Device_CDC_putc(uint8_t c)
 {
-  if ( !RingBuffer_Insert(&txring, &c) )
+  if ( !RingBuffer_pushOne(&txring, &c) )
   {
       return false;
   }
@@ -71,7 +71,7 @@ bool Board_USB_Device_CDC_getc(uint8_t *c)
 {
 	if(!c) return false; /* Make sure pointer isn't NULL */
 
-	return RingBuffer_Pop(&rxring, c);
+	return RingBuffer_popOne(&rxring, c);
 }
 
 uint16_t Board_USB_Device_CDC_Send(uint8_t* buffer, uint16_t count)
@@ -92,7 +92,7 @@ uint16_t Board_USB_Device_CDC_Receive(uint8_t* buffer, uint16_t max)
 {
   if( !(buffer && max) ) return 0; // buffer not NULL and max != 0
 
-  return RingBuffer_PopMult(&rxring, buffer, max);
+  return RingBuffer_pop(&rxring, buffer, max);
 }
 
 /**************************************************************************/
@@ -124,7 +124,7 @@ static ErrorCode_t __USB_Device_CDC_EPIn_Bulk_Handler(USBD_HANDLE_T hUsb, void* 
     uint8_t buffer[CDC_DATA_EP_MAXPACKET_SIZE];
     uint16_t count;
 
-    count = RingBuffer_PopMult(&txring, buffer, CDC_DATA_EP_MAXPACKET_SIZE);
+    count = RingBuffer_pop(&txring, buffer, CDC_DATA_EP_MAXPACKET_SIZE);
     USBD_API->hw->WriteEP(hUsb, CDC_DATA_EP_IN, buffer, count); // write data to EP
 
 //    isConnected = true;
@@ -143,7 +143,7 @@ static ErrorCode_t __USB_Device_CDC_EPOut_Bulk_Handler(USBD_HANDLE_T hUsb, void*
     count = USBD_API->hw->ReadEP(hUsb, CDC_DATA_EP_OUT, buffer);
     for (i=0; i<count; i++)
     {
-    	RingBuffer_Insert(&rxring, buffer+i);
+    	RingBuffer_pushOne(&rxring, buffer+i);
     }
 
 //    isConnected = true;
@@ -163,8 +163,8 @@ ErrorCode_t __USB_Device_CDC_onConfigured(USBD_HANDLE_T hUsb)
 
 //  isConnected = true;
 
-  RingBuffer_Flush(&rxring);
-  RingBuffer_Flush(&txring);
+  RingBuffer_flush(&rxring);
+  RingBuffer_flush(&txring);
 
   ADD_EVENT(EVENT_CDC_CONFIGURED)
 
@@ -180,10 +180,8 @@ ErrorCode_t __USB_Device_CDC_Init()
 	USB_INTERFACE_DESCRIPTOR const *const pControlIntfDesc = &USB_FsConfigDescriptor.CDC_CCI_Interface;
 	USB_INTERFACE_DESCRIPTOR const *const pDataIntfDesc = &USB_FsConfigDescriptor.CDC_DCI_Interface;
 
-	  /* Before using the ring buffers, initialize them using the ring
-	   buffer init function */
-	RingBuffer_Init(&rxring, rxbuff, 1, CDC_RRB_SIZE);
-	RingBuffer_Init(&txring, txbuff, 1, CDC_SRB_SIZE);
+	RingBuffer_init(&rxring, rxbuff, CDC_RRB_SIZE, sizeof(rxbuff[0]));
+	RingBuffer_init(&txring, txbuff, CDC_SRB_SIZE, sizeof(txbuff[0]));
 
 
 	USBD_CDC_INIT_PARAM_T cdc_param =

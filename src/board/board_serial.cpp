@@ -70,8 +70,8 @@ void Serial_Init(void)
 	UART0_Context.tx_rbr = new RingBuffer;
 	UART0_Context.rx_buffer = new uint8_t[UART_RXRB_SIZE];
 	UART0_Context.tx_buffer = new uint8_t[UART_TXRB_SIZE];
-	RingBuffer_init(UART0_Context.rx_rbr, UART0_Context.rx_buffer, UART_RXRB_SIZE, sizeof(uint8_t));
-	RingBuffer_init(UART0_Context.tx_rbr, UART0_Context.tx_buffer, UART_TXRB_SIZE, sizeof(uint8_t));
+	RingBuffer_init(UART0_Context.rx_rbr, UART0_Context.rx_buffer, UART_RXRB_SIZE, sizeof(UART0_Context.rx_buffer[0]));
+	RingBuffer_init(UART0_Context.tx_rbr, UART0_Context.tx_buffer, UART_TXRB_SIZE, sizeof(UART0_Context.tx_buffer[0]));
     Serial = UARTSerial(&UART0_Context);
 }
 
