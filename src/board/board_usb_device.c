@@ -106,10 +106,14 @@ static void __USB_Device_Chip_Init()
 	Chip_USB_Init();
 	/* Enable AHB clock to the USB block and USB RAM. */
 	LPC_SYSCTL->SYSAHBCLKCTRL |= ((0x1 << 14) | (0x1 << 27));
-	// Now we can set USB stack RAM base address to be in the USB RAM space
+
+    // Take care of USB_VBUS and USB_CONNECT on LPCXpresso 1347 board
+//    Chip_IOCON_PinMuxSet(LPC_IOCON, 0, 3, (IOCON_FUNC1 | IOCON_RESERVED_BIT_7 | IOCON_MODE_INACT)); /* PIO0_3 used for USB_VBUS */
+//    Chip_IOCON_PinMuxSet(LPC_IOCON, 0, 6, (IOCON_FUNC1 | IOCON_RESERVED_BIT_7 | IOCON_MODE_INACT)); /* PIO0_6 used for USB_CONNECT */
+
 	/* Pull-down is needed, or internally, VBUS will be floating. This is to
 	 address the wrong status in VBUSDebouncing bit in CmdStatus register.  */
-	LPC_IOCON->PIO0[3] &= ~0x1F;
+    LPC_IOCON->PIO0[3] &= ~0x1F;
 	LPC_IOCON->PIO0[3] |= (0x01 << 0); /* Secondary function VBUS */
 	LPC_IOCON->PIO0[6] &= ~0x07;
 	LPC_IOCON->PIO0[6] |= (0x01 << 0); /* Secondary function SoftConn */
