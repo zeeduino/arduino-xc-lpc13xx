@@ -35,7 +35,7 @@ void WIRE_ISR_HANDLER(void)
 
 void Board_I2C_Master_Init(void *pI2C)
 {
-    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
+//    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
 
 //    Init_I2C_PinMux();
 
@@ -68,13 +68,13 @@ void Board_I2C_Master_Init(void *pI2C)
 
 void Board_I2C_Slave_Init(void *pI2C, uint8_t address)
 {
-    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
+//    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
     // TODO
 }
 
 void Board_I2C_Set_Bus_Speed(void *pI2C, uint32_t frequency)
 {
-    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
+//    LPC_I2C_T *lpcI2C = (LPC_I2C_T *)pI2C;
     Chip_I2CM_SetBusSpeed(LPC_I2C, frequency);
 }
 

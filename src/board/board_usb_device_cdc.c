@@ -27,14 +27,14 @@ static bool isConnected = false;             /* ToDo: Consider work-around */
 
 //============================================================================
 /* Transmit and receive ring buffers */
-STATIC RingBuffer txring, rxring;
+static RingBuffer txring, rxring;
 
 /* Transmit and receive ring buffer sizes */
-#define CDC_SRB_SIZE (8*CDC_DATA_EP_MAXPACKET_SIZE)	/* Send */
-#define CDC_RRB_SIZE (2*CDC_DATA_EP_MAXPACKET_SIZE)	/* Receive */
+#define UART_TXRB_SIZE (8*CDC_DATA_EP_MAXPACKET_SIZE)	/* Send */
+#define UART_RXRB_SIZE (2*CDC_DATA_EP_MAXPACKET_SIZE)	/* Receive */
 
 /* Transmit and receive buffers */
-static uint8_t rxbuff[CDC_RRB_SIZE], txbuff[CDC_SRB_SIZE];
+static uint8_t rxbuff[UART_RXRB_SIZE], txbuff[UART_TXRB_SIZE];
 //============================================================================
 
 WEAK void USB_Device_CDC_Receive_ISR(void);
@@ -180,8 +180,8 @@ ErrorCode_t __USB_Device_CDC_Init()
 	USB_INTERFACE_DESCRIPTOR const *const pControlIntfDesc = &USB_FsConfigDescriptor.CDC_CCI_Interface;
 	USB_INTERFACE_DESCRIPTOR const *const pDataIntfDesc = &USB_FsConfigDescriptor.CDC_DCI_Interface;
 
-	RingBuffer_init(&rxring, rxbuff, CDC_RRB_SIZE, sizeof(rxbuff[0]));
-	RingBuffer_init(&txring, txbuff, CDC_SRB_SIZE, sizeof(txbuff[0]));
+	RingBuffer_init(&rxring, rxbuff, UART_RXRB_SIZE, sizeof(rxbuff[0]));
+	RingBuffer_init(&txring, txbuff, UART_TXRB_SIZE, sizeof(txbuff[0]));
 
 
 	USBD_CDC_INIT_PARAM_T cdc_param =
