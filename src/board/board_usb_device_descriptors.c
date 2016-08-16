@@ -474,7 +474,7 @@ ALIGNED(4) const USB_FS_CONFIGURATION_DESCRIPTOR USB_FsConfigDescriptor =
         .bDescriptorType  = USB_ENDPOINT_DESCRIPTOR_TYPE,
         .bEndpointAddress = CUSTOM_EP_IN,
         .bmAttributes     = USB_ENDPOINT_TYPE_BULK,
-        .wMaxPacketSize   = 64,
+        .wMaxPacketSize   = USB_FS_MAX_BULK_PACKET,
     },
 
     .Custom_BulkOUT =
@@ -483,7 +483,7 @@ ALIGNED(4) const USB_FS_CONFIGURATION_DESCRIPTOR USB_FsConfigDescriptor =
         .bDescriptorType  = USB_ENDPOINT_DESCRIPTOR_TYPE,
         .bEndpointAddress = CUSTOM_EP_OUT,
         .bmAttributes     = USB_ENDPOINT_TYPE_BULK,
-        .wMaxPacketSize   = 64,
+        .wMaxPacketSize   = USB_FS_MAX_BULK_PACKET,
     },
     #endif
 

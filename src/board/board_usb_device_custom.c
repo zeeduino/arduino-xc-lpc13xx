@@ -13,6 +13,7 @@
 #include "board/board_usb_device.h"
 #include "usb_device_descriptors.h"
 #include "usb_device_lpc1347.h"
+#include "ringbuffer.h"
 
 #include "tracer.h"
 
@@ -20,6 +21,10 @@
 /**************************************************************************/
 /* Private variables */
 static volatile bool isCustomEpInReady = false;
+static volatile bool isCustomDataReceived = false;
+static uint32_t customDataReceivedLength = 0;
+
+static uint8_t rx_buffer[USB_FS_MAX_BULK_PACKET];
 
 
 /**************************************************************************/
@@ -29,23 +34,33 @@ bool Board_USB_Device_Custom_isReadyToSend(void)
   return Board_USB_Device_isConfigured() && isCustomEpInReady;
 }
 
-ErrorCode_t Board_USB_Device_Custom_Send(uint8_t const * p_data, uint32_t length)
+uint32_t Board_USB_Device_Custom_availableDataCount(void)
 {
-	if(p_data == NULL || length == 0 || !Board_USB_Device_Custom_isReadyToSend()) return false;
-
-  uint32_t written_length = USBD_API->hw->WriteEP(g_hUsb, CUSTOM_EP_IN, (uint8_t*) p_data, length);
-  if ( written_length != length)
-  {
-    return ERR_FAILED;
-  }
-  isCustomEpInReady = false;
-
-  return LPC_OK;
+	return customDataReceivedLength;
 }
 
-bool Board_USB_Device_Custom_Receive(uint8_t * p_data, uint32_t length)
+uint32_t Board_USB_Device_Custom_Send(uint8_t const * buffer, uint32_t length)
 {
-	return true;
+  if(buffer == NULL || length == 0 || length > USB_FS_MAX_BULK_PACKET || !Board_USB_Device_Custom_isReadyToSend()) return 0;
+
+  uint32_t written_length = USBD_API->hw->WriteEP(g_hUsb, CUSTOM_EP_IN, (uint8_t*) buffer, length);
+
+  isCustomEpInReady = false;
+
+  return written_length;
+}
+
+uint32_t Board_USB_Device_Custom_Receive(uint8_t * buffer, uint32_t length)
+{
+	if(buffer == NULL || length == 0) return 0;
+	uint32_t size = length < customDataReceivedLength ? length: customDataReceivedLength;
+
+	memcpy(buffer, rx_buffer, size);
+
+	customDataReceivedLength = 0;
+	isCustomDataReceived = false;
+
+	return size;
 }
 
 /**************************************************************************/
@@ -65,19 +80,14 @@ static ErrorCode_t __USB_Device_Custom_Bulk_Endpoint_In_ISR (USBD_HANDLE_T husb,
   return LPC_OK;
 }
 
-static void Board_USB_Device_Custom_Received_ISR(uint8_t * p_buffer, uint32_t length)
-{
-	// RingBuffer_Insert(&ff_prot_cmd, p_data);
-}
-
 static ErrorCode_t __USB_Device_Custom_Bulk_Endpoint_Out_ISR (USBD_HANDLE_T husb, void* data, uint32_t event)
 {
   if (USB_EVT_OUT == event)
   {
-    uint8_t buffer[64] = { 0 }; // size is 64
-    uint32_t length = USBD_API->hw->ReadEP(husb, CUSTOM_EP_OUT, buffer);
-   	Board_USB_Device_Custom_Received_ISR( buffer, length);
+	customDataReceivedLength = USBD_API->hw->ReadEP(husb, CUSTOM_EP_OUT, rx_buffer);
+    isCustomDataReceived = true;
   }
+
   return LPC_OK;
 }
 

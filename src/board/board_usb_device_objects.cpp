@@ -5,7 +5,9 @@
 
 #include "lib/USBDeviceCDC.h"
 #include "board/board_serial_context.h"
+#include "lib/USBDeviceCustom.h"
 
 extern "C" Serial_UART_Context USBUART_Context;
 
 USBDeviceCDC UsbSerial(&USBUART_Context);
+USBDeviceCustom UsbBulk;
