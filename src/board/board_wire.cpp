@@ -48,7 +48,7 @@ void Board_I2C_Master_Init(void *pI2C)
      * Sets SCLH and SCLL based on PCLK (which is same as core clock)
      * and given speed
      */
-    Chip_I2CM_SetBusSpeed(LPC_I2C, SPEED_100KHZ);
+    Chip_I2CM_SetBusSpeed(LPC_I2C, SPEED_10KHZ);
     /*
      * Clears SI, STO, STA and AA bits
      * via CONCLR
@@ -99,7 +99,7 @@ uint32_t Board_I2C_Master_Read_Blocking(void *pI2C, uint8_t address, uint8_t *rx
     // returns: xfer->status != I2CM_STATUS_BUSY;
     //    Chip_I2CM_XferBlocking(LPC_I2C, &xfer);
     Chip_I2CM_XferBlocking(lpcI2C, &xfer);
-    Serial.println(xfer.status);
+//    Serial.println(xfer.status);
 
     return 0;
 }
