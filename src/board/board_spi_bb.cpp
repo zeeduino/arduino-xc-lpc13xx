@@ -39,7 +39,11 @@
 //#define MOSI_BIT     APIN_PIN(SPI_BUILTIN_MOSI)
 //#define MOSI_PORT    APIN_PORT(SPI_BUILTIN_MOSI)
 
+// ~10kHz
+//#define BB_DELAY() delayMicroseconds(50)
+// ~100kHz
 //#define BB_DELAY() delayMicroseconds(5)
+// as fast as we can
 #define BB_DELAY()
 
 //#define CS_LOW() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORT, CS_BIT, false)
