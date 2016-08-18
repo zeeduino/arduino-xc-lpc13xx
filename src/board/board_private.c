@@ -36,7 +36,6 @@ void Board_ADC_Init(void)
 {
     /*ADC Init */
     Chip_ADC_Init(LPC_ADC, &ADCSetup);
-    Chip_ADC_EnableChannel(LPC_ADC, ADC_CH0, ENABLE);
 }
 
 

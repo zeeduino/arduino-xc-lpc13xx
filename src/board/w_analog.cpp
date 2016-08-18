@@ -47,6 +47,10 @@ uint32_t Board_Analog_Read(uint32_t adcChannel)
     modefunc = APIN_MODE(pinNumber);
     Chip_IOCON_PinMuxSet(LPC_IOCON, port, pin, modefunc);
 
+    /* Burst mode is disabled by default (see Chip_ADC_Init()) se we need to
+     * enable A/D channel */
+    Chip_ADC_EnableChannel(LPC_ADC, static_cast<ADC_CHANNEL_T>(adcChannel), ENABLE);
+
     /* Start A/D conversion */
     Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
 
