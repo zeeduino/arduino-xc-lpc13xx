@@ -88,7 +88,17 @@ const DigitalMappingType g_ArduinoPinMappingDigital[] =
 
         // I2C
         { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) }, // 0.4
-        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) }  // 0.5
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.5
+
+        /*------ LPC1347 chip specific extra pins -------*/
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.1
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.2
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.8
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.17
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.20
+        { LPC_GPIO_PORT, (IOCON_FUNC0 | IOCON_DIGMODE_EN), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 0.22
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) },  // 1.24
+        { LPC_GPIO_PORT, (IOCON_FUNC0), (IOCON_MODE_PULLUP), (IOCON_MODE_PULLDOWN), (0) }  // 1.31
 };
 
 /*
@@ -140,13 +150,13 @@ const ArduinoPinDescriptionType g_ArduinoPinDescription[] =
         { 0,  4,  (IOCON_FUNC1 | IOCON_STDI2C_EN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // I2C SCL
         { 0,  5,  (IOCON_FUNC1 | IOCON_STDI2C_EN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // I2C SDA
 
-        /*------ LPC1347 variant specific extra pins -------*/
+        /*------ LPC1347 chip specific extra pins -------*/
         { 0,  1,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 26
         { 0,  2,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 27
         { 0,  8,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 28
         { 0,  17,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 29
         { 0,  20,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 30
-        { 0,  22,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 31
+        { 0,  22,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN | IOCON_DIGMODE_EN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 31
         { 1,  24,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 32
         { 1,  31,  (IOCON_FUNC0 | IOCON_MODE_PULLDOWN), NO_ADC, NOT_ON_PWM, NO_EXT_INT }, // 33
 
