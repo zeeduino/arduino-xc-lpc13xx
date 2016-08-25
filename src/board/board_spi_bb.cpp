@@ -23,127 +23,139 @@
 #include "wiring_delay.h"
 #include "pins_arduino.h"
 #include "board/board_spi.h"
+#include "board/board_fast_pins.h"
 
 #include "chip.h"
-#include "ssp_13xx.h"
 
-//#define CS_BIT       APIN_PIN(SPI_BUILTIN_SSEL)
-//#define CS_PORT      APIN_PORT(SPI_BUILTIN_SSEL)
-//
-//#define SCK_BIT      APIN_PIN(SPI_BUILTIN_SCK)
-//#define SCK_PORT     APIN_PORT(SPI_BUILTIN_SCK)
-//
-//#define MISO_BIT     APIN_PIN(SPI_BUILTIN_MISO)
-//#define MISO_PORT    APIN_PORT(SPI_BUILTIN_MISO)
-//
-//#define MOSI_BIT     APIN_PIN(SPI_BUILTIN_MOSI)
-//#define MOSI_PORT    APIN_PORT(SPI_BUILTIN_MOSI)
-
-// ~10kHz
+// ~2.27kHz : ~220us data pulse width -> ~440us bit width -> ~2.27kHz
 //#define BB_DELAY() delayMicroseconds(50)
-// ~100kHz
+// ~12kHz : 40us data pulse width -> 80us bit width -> ~12.5kHz
 //#define BB_DELAY() delayMicroseconds(5)
+// ~32kHz : 15us data pulse width -> 30us bit width -> ~33kHz
+#define BB_DELAY() delayMicroseconds(0)
 // as fast as we can
-#define BB_DELAY()
+// ~196kHz : 2.6us data pulse width -> 5.2us bit width -> ~192kHz
+//#define BB_DELAY()
 
-//#define CS_LOW() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORT, CS_BIT, false)
-//#define CS_HIGH() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORT, CS_BIT, true)
-//#define SCK_LOW() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, SCK_PORT, SCK_BIT, false)
-//#define SCK_HIGH() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, SCK_PORT, SCK_BIT, true)
-//#define MISO() Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, MISO_PORT, MISO_BIT)
-//#define MOSI(x) Chip_GPIO_WritePortBit(LPC_GPIO_PORT, MOSI_PORT, MOSI_BIT, x)
+typedef struct _BoardSPIPortInternal
+{
+	FAST_ZPIN_HANDLE(CS)
+	FAST_ZPIN_HANDLE(SCK)
+	FAST_ZPIN_HANDLE(MISO)
+	FAST_ZPIN_HANDLE(MOSI)
+} BoardSPIPortInternal;
 
-#define CS_LOW() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORTv, CS_BITv, false)
-#define CS_HIGH() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORTv, CS_BITv, true)
-#define SCK_LOW() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, SCK_PORTv, SCK_BITv, false)
-#define SCK_HIGH() Chip_GPIO_WritePortBit(LPC_GPIO_PORT, SCK_PORTv, SCK_BITv, true)
-#define MISO() Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, MISO_PORTv, MISO_BITv)
-#define MOSI(x) Chip_GPIO_WritePortBit(LPC_GPIO_PORT, MOSI_PORTv, MOSI_BITv, x)
 
-uint8_t CS_BITv;
-uint8_t CS_PORTv;
-uint8_t SCK_BITv;
-uint8_t SCK_PORTv;
-uint8_t MISO_BITv;
-uint8_t MISO_PORTv;
-uint8_t MOSI_BITv;
-uint8_t MOSI_PORTv;
+BoardSPIPortInternal onlyCurrentSPIPort;
+
+BoardSPIPortInternal *currentPort = &onlyCurrentSPIPort;
+
+void __init_spi_handle(BoardSPIPort *port)
+{
+	port->handle = (void*)&onlyCurrentSPIPort;
+	currentPort = &onlyCurrentSPIPort;
+
+	FAST_ZPIN_INIT(currentPort->CS, port->cs);
+	FAST_ZPIN_INIT(currentPort->SCK, port->clk);
+	FAST_ZPIN_INIT(currentPort->MISO, port->miso);
+	FAST_ZPIN_INIT(currentPort->MOSI, port->mosi);
+}
 
 void Board_SPI_SetInternalPortStateDefault(BoardSPIPort *port)
 {
-	CS_BITv    =   APIN_PIN(SPI_BUILTIN_SSEL);
-	CS_PORTv   =   APIN_PORT(SPI_BUILTIN_SSEL);
-
-	SCK_BITv   =   APIN_PIN(SPI_BUILTIN_SCK);
-	SCK_PORTv  =   APIN_PORT(SPI_BUILTIN_SCK);
-
-	MISO_BITv  =   APIN_PIN(SPI_BUILTIN_MISO);
-	MISO_PORTv =   APIN_PORT(SPI_BUILTIN_MISO);
-
-	MOSI_BITv  =    APIN_PIN(SPI_BUILTIN_MOSI);
-	MOSI_PORTv =    APIN_PORT(SPI_BUILTIN_MOSI);
+	FAST_ZPIN_INIT(currentPort->CS, SPI_BUILTIN_SSEL);
+	FAST_ZPIN_INIT(currentPort->SCK, SPI_BUILTIN_SCK);
+	FAST_ZPIN_INIT(currentPort->MISO, SPI_BUILTIN_MISO);
+	FAST_ZPIN_INIT(currentPort->MOSI, SPI_BUILTIN_MOSI);
 }
 
 void Board_SPI_SetInternalPortState(BoardSPIPort *port)
 {
-	CS_BITv    =   APIN_PIN(port->cs);
-	CS_PORTv   =   APIN_PORT(port->cs);
-
-	SCK_BITv   =   APIN_PIN(port->clk);
-	SCK_PORTv  =   APIN_PORT(port->clk);
-
-	MISO_BITv  =   APIN_PIN(port->miso);
-	MISO_PORTv =   APIN_PORT(port->miso);
-
-	MOSI_BITv  =    APIN_PIN(port->mosi);
-	MOSI_PORTv =    APIN_PORT(port->mosi);
+	currentPort = (BoardSPIPortInternal *)(port->handle);
 }
 
-uint8_t Board_SPI_Transfer(BoardSPIPort *port, uint8_t data)
+uint8_t Board_SPI_Transfer_MSB(BoardSPIPort *port, uint8_t data)
 {
     uint8_t rx;
     int i;
 
     Board_SPI_SetInternalPortState(port);
 
-//    CS_LOW();
+//    FAST_ZPIN_LOW(currentPort->CS);
     BB_DELAY();
     rx = 0x00;
     for (i = 7; i >= 0; i--)
     {
         rx <<= 1;
 
-        SCK_LOW();
+        FAST_ZPIN_LOW(currentPort->SCK);
         BB_DELAY();
 
-        MOSI(data & (1 << i));
+        FAST_ZPIN_WRITE(currentPort->MOSI, data & (1 << i));
         BB_DELAY();
 
-        SCK_HIGH();
+        FAST_ZPIN_HIGH(currentPort->SCK);
         BB_DELAY();
-        if (MISO())
+        if (FAST_ZPIN_READ(currentPort->MISO))
             rx |= 1;
         BB_DELAY();
     }
-//    MOSI(true); // MOSI HIGH when idle
+//    FAST_ZPIN_WRITE(currentPort->MOSI, true); // MOSI HIGH when idle
 
     return rx;
+}
+
+uint8_t Board_SPI_Transfer_LSB(BoardSPIPort *port, uint8_t data)
+{
+    uint8_t rx;
+    int i;
+
+    Board_SPI_SetInternalPortState(port);
+
+//    FAST_ZPIN_LOW(currentPort->CS);
+    BB_DELAY();
+    rx = 0x00;
+    for (i = 0; i <= 7; i++)
+    {
+        rx <<= 1;
+
+        FAST_ZPIN_LOW(currentPort->SCK);
+        BB_DELAY();
+
+        FAST_ZPIN_WRITE(currentPort->MOSI, data & (1 << i));
+        BB_DELAY();
+
+        FAST_ZPIN_HIGH(currentPort->SCK);
+        BB_DELAY();
+        if (FAST_ZPIN_READ(currentPort->MISO))
+            rx |= 1;
+        BB_DELAY();
+    }
+//    FAST_ZPIN_WRITE(currentPort->MOSI, true); // MOSI HIGH when idle
+
+    return rx;
+}
+
+uint8_t Board_SPI_Transfer(BoardSPIPort *port, uint8_t data)
+{
+	return Board_SPI_Transfer_MSB(port, data);
 }
 
 void Board_SPI_CS_High(BoardSPIPort *port)
 {
     Board_SPI_SetInternalPortState(port);
-    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, CS_BITv, true);
+    FAST_ZPIN_WRITE(currentPort->CS, true);
 }
 
 void Board_SPI_CS_Low(BoardSPIPort *port)
 {
     Board_SPI_SetInternalPortState(port);
-    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, CS_BITv, false);
+    FAST_ZPIN_WRITE(currentPort->CS, false);
 }
 
 void Board_SPI_Init(BoardSPIPort *port)
 {
+	__init_spi_handle(port);
     Board_SPI_SetInternalPortState(port);
 
     Board_Digital_Write(port->cs, HIGH);
@@ -151,27 +163,10 @@ void Board_SPI_Init(BoardSPIPort *port)
     Board_Digital_Write(port->miso, HIGH);
     Board_Digital_Write(port->mosi, HIGH);
 
-//    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, CS_PORTv, CS_BITv, true);
-//    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, SCK_PORTv, SCK_BITv, true);
-//    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, MISO_PORTv, MISO_BITv, true);
-//    Chip_GPIO_WritePortBit(LPC_GPIO_PORT, MOSI_PORTv, MOSI_BITv, true);
-
     Board_Digital_PinMode(port->cs, OUTPUT);
     Board_Digital_PinMode(port->clk, OUTPUT);
     Board_Digital_PinMode(port->miso, OUTPUT);
     Board_Digital_PinMode(port->mosi, OUTPUT);
-
-//    Chip_IOCON_PinMuxSet(LPC_IOCON, CS_PORTv, CS_BITv, (IOCON_FUNC0 | IOCON_MODE_PULLUP)); /* PIO1_19 connected to SSEL1 */
-//    Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, CS_PORTv, CS_BITv, true); /* output */
-//    Chip_IOCON_PinMuxSet(LPC_IOCON, SCK_PORTv, SCK_BITv, (IOCON_FUNC0 | IOCON_MODE_PULLUP)); /* PIO1_20 connected to SCK1 */
-//    Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, SCK_PORTv, SCK_BITv, true); /* output */
-//    Chip_IOCON_PinMuxSet(LPC_IOCON, MISO_PORTv, MISO_BITv, (IOCON_FUNC0 | IOCON_MODE_PULLUP)); /* PIO1_21 connected to MISO1 */
-//    Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, MISO_PORTv, MISO_BITv, false); /* input */
-    // This will give us MOSI HIGH when idle
-//    Chip_IOCON_PinMuxSet(LPC_IOCON, MOSI_PORTv, MOSI_BITv, (IOCON_FUNC0 | IOCON_MODE_PULLUP)); /* PIO1_22 connected to MOSI1 */
-    // This will give us MOSI LOW when idle
-    //Chip_IOCON_PinMuxSet(LPC_IOCON, MOSI_PORTv, MOSI_BITv, (IOCON_FUNC0 | IOCON_MODE_PULLDOWN));
-//    Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, MOSI_PORTv, MOSI_BITv, true); /* output */
 }
 
 void Board_SPI_End(BoardSPIPort *port)
